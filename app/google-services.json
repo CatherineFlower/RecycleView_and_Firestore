@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "957446764419",
+    "project_id": "recycleview-and-firestore",
+    "storage_bucket": "recycleview-and-firestore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957446764419:android:242583e1c8bbcdef55a8b6",
+        "android_client_info": {
+          "package_name": "com.example.recycleview_and_firestore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3bEoUVvlup1PYQ1LS8lotO4xzdHK68kY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957446764419:android:92c0e21a3b77ce8b55a8b6",
+        "android_client_info": {
+          "package_name": "com.example.recycleview_and_firestore.ui"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3bEoUVvlup1PYQ1LS8lotO4xzdHK68kY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
