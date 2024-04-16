@@ -1,41 +1,151 @@
 package com.example.recycleview_and_firestore.domain;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.recycleview_and_firestore.model.Error;
 import com.example.recycleview_and_firestore.model.Item;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
+import java.util.List;
 
 public class ItemRepository {
 
-    private static final String COLLECTION_USERS = "users";
-    private static final String DOCUMENT_USER_PHONE = "type";
+    @SuppressLint("StaticFieldLeak")
+    private static final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private static final String COLLECTION_ITEMS = "items";
+//    private static final String DOCUMENT_USER_PHONE = "type";
 
-    public static void getItems(){
-
-    }
-
-    // Callback with error
-    public static void getItemById(String id, SuccessListener<Item> successListener, ErrorListener errorListener) {
-        getItemDocument(id).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    try {
-                        Item item = documentSnapshot.toObject(Item.class);
-                        assert item != null; // throw AssertionError if item not found
-                        successListener.onSuccess(item);
-                    } catch (ClassCastException exception) {
-                        errorListener.onError(Error.CAST);
-                    } catch (AssertionError exception) {
-                        errorListener.onError(Error.NOT_FOUND);
+    public static void getItems(OnItemsLoaded onItemsLoaded){
+        firestore.collection(COLLECTION_ITEMS)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshot) {
+                        List<Item> items = documentSnapshot.toObjects(Item.class);
+                        onItemsLoaded.onItemsLoaded(items);
                     }
                 })
-                .addOnFailureListener(exception -> {
-                    errorListener.onError(getError(exception));
-                });
+                .addOnFailureListener(new OnFailureListener() {
+                                          @Override
+                                          public void onFailure(@NonNull Exception e) {
+                                              e.printStackTrace();
+                                          }
+                                      }
+                );
+//                firestore.collection(COLLECTION_ITEMS)
+//                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                        if (value == null) {
+//                            if (error != null) {
+//                                new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                };
+//                            } else {
+//                                new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                };
+//                            }
+//                        } else {
+//                            try {
+//                                new OnSuccessListener<QuerySnapshot>() {
+//                                    @Override
+//                                    public void onSuccess(QuerySnapshot documentSnapshot) {
+//                                        List<Item> items = documentSnapshot.toObjects(Item.class);
+//                                        onItemsLoaded.onItemsLoaded(items);
+//                                    }
+//                                };
+//                            } catch (Exception e) {
+//                                new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                };
+//                            }
+//                        }
+//                    }
+//                });
     }
+        public static void subItems(OnItemsLoaded onItemsLoaded){
+            firestore.collection(COLLECTION_ITEMS)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if (value == null) {
+                                if (error != null) {
+                                    new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    };
+                                } else {
+                                    new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    };
+                                }
+                            } else {
+                                try {
+                                    new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot documentSnapshot) {
+                                            List<Item> items = documentSnapshot.toObjects(Item.class);
+                                            onItemsLoaded.onItemsLoaded(items);
+                                        }
+                                    };
+                                } catch (Exception e) {
+                                    new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    };
+                                }
+                            }
+                        }
+                    });
+        }
+
+    // Callback with error
+//    public static void getItemById(String id, SuccessListener<Item> successListener, ErrorListener errorListener) {
+//        getItemDocument(id).get()
+//                .addOnSuccessListener(documentSnapshot -> {
+//                    try {
+//                        Item item = documentSnapshot.toObject(Item.class);
+//                        assert item != null; // throw AssertionError if item not found
+//                        successListener.onSuccess(item);
+//                    } catch (ClassCastException exception) {
+//                        errorListener.onError(Error.CAST);
+//                    } catch (AssertionError exception) {
+//                        errorListener.onError(Error.NOT_FOUND);
+//                    }
+//                })
+//                .addOnFailureListener(exception -> {
+//                    errorListener.onError(getError(exception));
+//                });
+//    }
 
 //    public static Task<Void> updateUserPhone(String id, String phone) {
 //        HashMap<String, Object> updateMap = new HashMap<>();
@@ -45,7 +155,7 @@ public class ItemRepository {
 
     private static DocumentReference getItemDocument(String id) {
         return FirebaseFirestore.getInstance()
-                .collection(COLLECTION_USERS)
+                .collection(COLLECTION_ITEMS)
                 .document(id);
     }
 

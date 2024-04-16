@@ -26,7 +26,7 @@ public class ItemAdapter extends Adapter<ItemViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = items.get(position);
-        holder.bind(item);
+        holder.bind(item, position);
     }
 
     @Override

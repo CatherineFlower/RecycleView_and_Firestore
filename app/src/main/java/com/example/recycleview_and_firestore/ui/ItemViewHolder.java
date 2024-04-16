@@ -14,8 +14,8 @@ public class ItemViewHolder extends ViewHolder {
         this.binding = binding;
     }
 
-    public void bind(Item item) {
-        binding.id.setText(item.getId());
+    public void bind(Item item, int position) {
+        binding.id.setText(String.valueOf(position + 1));
         binding.name.setText(item.getName());
         binding.description.setText(item.getDescription());
         binding.type.setText(item.getType());

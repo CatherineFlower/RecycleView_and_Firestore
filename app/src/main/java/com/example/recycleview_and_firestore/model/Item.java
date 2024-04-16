@@ -1,5 +1,7 @@
 package com.example.recycleview_and_firestore.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.DocumentId;
 
 public class Item {
@@ -53,5 +55,9 @@ public class Item {
         this.description = description;
     }
 
-
+    @NonNull
+    @Override
+    public String toString() {
+        return "Item {id=" + id + " name=" + name + "}";
+    }
 }
