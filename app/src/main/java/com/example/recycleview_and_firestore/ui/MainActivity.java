@@ -29,14 +29,6 @@ public class MainActivity extends AppCompatActivity {
             binding.recycler.setAdapter(adapter);
             adapter.setItems(items);
         });
-        ItemRepository.subItems(new OnItemsLoaded() {
-            @Override
-            public void onItemsLoaded(List<Item> items) {
-                ItemAdapter adapter = new ItemAdapter();
-                binding.recycler.setAdapter(adapter);
-                adapter.setItems(items);
-            }
-        });
     }
 }
 

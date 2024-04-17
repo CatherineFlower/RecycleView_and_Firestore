@@ -27,23 +27,23 @@ public class ItemRepository {
     private static final String COLLECTION_ITEMS = "items";
 //    private static final String DOCUMENT_USER_PHONE = "type";
 
-    public static void getItems(OnItemsLoaded onItemsLoaded){
-        firestore.collection(COLLECTION_ITEMS)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot documentSnapshot) {
-                        List<Item> items = documentSnapshot.toObjects(Item.class);
-                        onItemsLoaded.onItemsLoaded(items);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                                          @Override
-                                          public void onFailure(@NonNull Exception e) {
-                                              e.printStackTrace();
-                                          }
-                                      }
-                );
+//    public static void getItems(OnItemsLoaded onItemsLoaded){
+//        firestore.collection(COLLECTION_ITEMS)
+//                .get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot documentSnapshot) {
+//                        List<Item> items = documentSnapshot.toObjects(Item.class);
+//                        onItemsLoaded.onItemsLoaded(items);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                                          @Override
+//                                          public void onFailure(@NonNull Exception e) {
+//                                              e.printStackTrace();
+//                                          }
+//                                      }
+//                );
 //                firestore.collection(COLLECTION_ITEMS)
 //                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
 //                    @Override
@@ -85,7 +85,7 @@ public class ItemRepository {
 //                    }
 //                });
     }
-        public static void subItems(OnItemsLoaded onItemsLoaded){
+        public static void getItems(OnItemsLoaded onItemsLoaded){
             firestore.collection(COLLECTION_ITEMS)
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
