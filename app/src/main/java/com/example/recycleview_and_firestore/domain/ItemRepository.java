@@ -84,7 +84,7 @@ public class ItemRepository {
 //                        }
 //                    }
 //                });
-    }
+//    }
         public static void getItems(OnItemsLoaded onItemsLoaded){
             firestore.collection(COLLECTION_ITEMS)
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
