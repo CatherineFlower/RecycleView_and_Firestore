@@ -92,36 +92,16 @@ public class ItemRepository {
                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                             if (value == null) {
                                 if (error != null) {
-                                    new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    };
+                                    error.printStackTrace();
                                 } else {
-                                    new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    };
+                                    error.printStackTrace();
                                 }
                             } else {
                                 try {
-                                    new OnSuccessListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onSuccess(QuerySnapshot documentSnapshot) {
-                                            List<Item> items = documentSnapshot.toObjects(Item.class);
-                                            onItemsLoaded.onItemsLoaded(items);
-                                        }
-                                    };
+                                    List<Item> items = value.toObjects(Item.class);
+                                    onItemsLoaded.onItemsLoaded(items);
                                 } catch (Exception e) {
-                                    new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    };
+                                    e.printStackTrace();
                                 }
                             }
                         }
